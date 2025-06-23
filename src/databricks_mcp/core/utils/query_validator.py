@@ -189,4 +189,23 @@ class QueryValidator:
     
     def get_allowed_statements(self) -> List[str]:
         """Get list of allowed statement types."""
-        return list(self.ALLOWED_STATEMENTS) 
+        return list(self.ALLOWED_STATEMENTS)
+    
+    def validate_query(self, query: str) -> dict:
+        """
+        Validate a SQL query and return result in dictionary format.
+        This method is called by the MCP server tools.
+        
+        Args:
+            query: SQL query string to validate
+            
+        Returns:
+            Dictionary with validation result
+        """
+        is_safe, error_message = self.is_safe_query(query)
+        
+        return {
+            "is_valid": is_safe,
+            "reason": error_message if not is_safe else "Query is valid",
+            "query": query
+        } 

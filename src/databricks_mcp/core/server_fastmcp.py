@@ -233,18 +233,23 @@ async def get_table_info(table_name: str, catalog: Optional[str] = None, schema:
                 raise
         
         if table_info:
+            # Handle data_source_format serialization
+            data_source_format = getattr(table_info, 'data_source_format', None)
+            if data_source_format:
+                data_source_format = str(data_source_format)
+            
             result = {
                 "name": table_info.name,
                 "full_name": table_info.full_name,
                 "catalog_name": table_info.catalog_name,
                 "schema_name": table_info.schema_name,
                 "table_type": str(table_info.table_type),
-                "data_source_format": getattr(table_info, 'data_source_format', None),
+                "data_source_format": data_source_format,
                 "comment": getattr(table_info, 'comment', None),
                 "columns": [
                     {
                         "name": col.name,
-                        "type_name": col.type_name,
+                        "type_name": str(col.type_name),
                         "type_text": col.type_text,
                         "comment": getattr(col, 'comment', None)
                     }
