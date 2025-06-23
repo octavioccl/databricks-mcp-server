@@ -31,10 +31,10 @@ def main():
             print(f"❌ Failed to run bin script: {e}")
             # Fall through to direct execution
     
-    # Fallback - run directly using the FastMCP server
+    # Fallback - run directly using the server
     try:
-        from databricks_mcp.servers.main_fastmcp import main as fastmcp_main
-        fastmcp_main()
+        from databricks_mcp.servers.main import main as server_main
+        server_main()
     except ImportError as e:
         print(f"❌ Failed to import server: {e}")
         print("\nMake sure all dependencies are installed:")

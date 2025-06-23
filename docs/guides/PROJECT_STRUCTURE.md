@@ -37,8 +37,7 @@ databricks-mcp-server/
 │       │       └── query_validator.py
 │       └── servers/
 │           ├── __init__.py
-│           ├── main.py                # Main entry point (redirects to FastMCP)
-│           └── main_fastmcp.py        # FastMCP entry point
+│           └── main.py                # Unified FastMCP server entry point
 ├── docs/                              # Documentation
 ├── deploy/                            # Docker deployment files
 ├── tools/                             # Utility scripts
@@ -82,11 +81,10 @@ Supporting modules:
 
 ### 4. Entry Points
 
-Multiple entry points for flexibility:
+Unified entry points for simplicity:
 - `bin/databricks-mcp-server`: CLI script with options
-- `cli/main.py`: Python module entry point
-- `servers/main_fastmcp.py`: Direct FastMCP launcher
-- `servers/main.py`: Unified entry point (redirects to FastMCP)
+- `cli/main.py`: Python module entry point  
+- `servers/main.py`: Unified FastMCP server launcher
 
 ## Tool Implementation Pattern
 
@@ -159,10 +157,10 @@ The server handles async event loop conflicts (common in Docker/Jupyter environm
 python -m py_compile src/databricks_mcp/core/server_fastmcp.py
 
 # Run server locally
-python src/databricks_mcp/servers/main_fastmcp.py
+python src/databricks_mcp/servers/main.py
 
 # Test with MCP inspector
-npx @modelcontextprotocol/inspector python src/databricks_mcp/servers/main_fastmcp.py
+npx @modelcontextprotocol/inspector python src/databricks_mcp/servers/main.py
 ```
 
 ### Docker Development
@@ -201,7 +199,7 @@ MCP_LOG_LEVEL=INFO
   "mcpServers": {
     "databricks": {
       "command": "python",
-      "args": ["/path/to/databricks-mcp-server/src/databricks_mcp/servers/main_fastmcp.py"],
+      "args": ["/path/to/databricks-mcp-server/src/databricks_mcp/servers/main.py"],
       "env": {
         "DATABRICKS_HOST": "https://your-workspace.cloud.databricks.com",
         "DATABRICKS_TOKEN": "your-token"

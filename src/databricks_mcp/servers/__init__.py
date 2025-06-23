@@ -1,16 +1,12 @@
 """
-MCP Server implementations for Databricks.
+Databricks MCP Server
 
-This module contains different server implementations:
-- FastMCP server (modern, recommended)
-- Standard MCP server (legacy)
-- CLI entry points
+This module contains the unified FastMCP server implementation.
+All server functionality is consolidated into a single main.py entry point.
 """
 
-from .main_fastmcp import main as fastmcp_main
-from .main import main as standard_main
+from .main import main
 
 __all__ = [
-    "fastmcp_main",
-    "standard_main"
+    "main"
 ] 

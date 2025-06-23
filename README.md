@@ -4,14 +4,14 @@ A comprehensive **FastMCP** server that provides AI agents with powerful tools t
 
 ## 🚀 Architecture
 
-This project uses a **single FastMCP server architecture** with all tools implemented as individual `@mcp.tool()` decorated functions, providing:
+This project uses a **unified FastMCP server architecture** with all tools implemented as individual `@mcp.tool()` decorated functions, providing:
 
 - **35+ MCP Tools** across 6 comprehensive categories
-- **Single Process**: Efficient resource usage and deployment
+- **Single Entry Point**: Simplified deployment and management
 - **Async/Await Support**: With event loop conflict handling for Docker environments  
 - **JSON Responses**: Structured, consistent tool outputs
 - **Thread-Safe**: Concurrent tool execution support
-- **Docker Ready**: Optimized for containerized deployment
+- **Docker Ready**: Optimized for containerized deployment with Poetry
 
 ## ✨ Features
 
@@ -94,7 +94,7 @@ This project uses a **single FastMCP server architecture** with all tools implem
    ./bin/databricks-mcp-server
    
    # Or directly with Python
-   python src/databricks_mcp/servers/main_fastmcp.py
+   python src/databricks_mcp/servers/main.py
    ```
 
 ### Claude Desktop Configuration
@@ -109,7 +109,7 @@ Add to your Claude Desktop configuration file:
   "mcpServers": {
     "databricks": {
       "command": "python",
-      "args": ["/path/to/databricks-mcp-server/src/databricks_mcp/servers/main_fastmcp.py"],
+      "args": ["/path/to/databricks-mcp-server/src/databricks_mcp/servers/main.py"],
       "env": {
         "DATABRICKS_HOST": "https://your-workspace.cloud.databricks.com",
         "DATABRICKS_TOKEN": "your-token-here"
@@ -192,7 +192,7 @@ MCP_ENABLE_NATURAL_LANGUAGE=true
 ./bin/databricks-mcp-server --log DEBUG
 
 # Test with MCP Inspector
-npx @modelcontextprotocol/inspector python src/databricks_mcp/servers/main_fastmcp.py
+npx @modelcontextprotocol/inspector python src/databricks_mcp/servers/main.py
 ```
 
 ### Adding New Tools

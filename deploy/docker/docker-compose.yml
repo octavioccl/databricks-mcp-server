@@ -23,13 +23,13 @@ services:
       - "8000:8000"  # For development/debugging
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "python", "-c", "from databricks_mcp.core.config import DatabricksConfig; print('OK')"]
+      test: ["CMD", "python", "-c", "from databricks_mcp.core.config import DatabricksConfig; print('✅ Health check passed')"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 10s
     
-    # Alternative server configurations
+    # Use unified server architecture
     profiles:
       - default
 
