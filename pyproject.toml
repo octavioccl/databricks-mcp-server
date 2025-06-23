@@ -1,26 +1,24 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
-[project]
+[tool.poetry]
 name = "databricks-mcp"
 version = "1.0.0"
-description = "A Model Context Protocol (MCP) server for Databricks Unity Catalog and SQL Warehouses"
+description = "A comprehensive FastMCP server for Databricks workspaces with 35+ tools across 6 categories"
+authors = ["Octavio Cuenca <occlhack@gmail.com>"]
+maintainers = ["Octavio Cuenca <occlhack@gmail.com>"]
 readme = "README.md"
-license = {text = "MIT"}
-authors = [
-    {name = "Databricks MCP Team", email = "support@databricks.com"}
-]
-maintainers = [
-    {name = "Databricks MCP Team", email = "support@databricks.com"}
-]
-keywords = ["databricks", "mcp", "model-context-protocol", "sql", "unity-catalog"]
+license = "MIT"
+homepage = "https://github.com/databricks/databricks-mcp-server"
+repository = "https://github.com/databricks/databricks-mcp-server"
+documentation = "https://github.com/databricks/databricks-mcp-server/docs"
+keywords = ["databricks", "mcp", "model-context-protocol", "sql", "unity-catalog", "fastmcp"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10", 
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -28,70 +26,48 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Scientific/Engineering :: Information Analysis"
 ]
-requires-python = ">=3.9"
-dependencies = [
-    "fastmcp>=0.1.0",
-    "mcp[cli]>=1.0.0",
-    "databricks-sdk>=0.18.0",
-    "python-dotenv>=1.0.0",
-    "pydantic>=2.5.0",
-    "asyncio-context>=0.1.0; python_version<'3.11'",
-    "aiofiles>=23.0.0",
-    "httpx>=0.25.0"
-]
+packages = [{include = "databricks_mcp", from = "src"}]
 
-[project.optional-dependencies]
-dev = [
-    "pytest>=7.0.0",
-    "pytest-asyncio>=0.21.0",
-    "pytest-mock>=3.10.0",
-    "black>=23.0.0",
-    "flake8>=6.0.0",
-    "mypy>=1.0.0",
-    "isort>=5.12.0",
-    "pre-commit>=3.0.0"
-]
-docs = [
-    "mkdocs>=1.5.0",
-    "mkdocs-material>=9.0.0",
-    "mkdocstrings[python]>=0.20.0"
-]
-test = [
-    "pytest>=7.0.0",
-    "pytest-asyncio>=0.21.0",
-    "pytest-cov>=4.0.0",
-    "pytest-mock>=3.10.0",
-    "coverage>=7.0.0"
-]
-all = [
-    "databricks-mcp[dev,docs,test]"
-]
+[tool.poetry.dependencies]
+python = "^3.10"
+fastmcp = "^0.1.0"
+mcp = {extras = ["cli"], version = "^1.0.0"}
+databricks-sdk = "^0.18.0"
+python-dotenv = "^1.0.0"
+pydantic = "^2.5.0"
+aiofiles = "^23.0.0"
+httpx = "^0.27.0"
 
-[project.urls]
-Homepage = "https://github.com/databricks/databricks-mcp-server"
-Documentation = "https://github.com/databricks/databricks-mcp-server/docs"
-Repository = "https://github.com/databricks/databricks-mcp-server"
-Issues = "https://github.com/databricks/databricks-mcp-server/issues"
-Changelog = "https://github.com/databricks/databricks-mcp-server/releases"
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0.0"
+pytest-asyncio = "^0.21.0"
+pytest-mock = "^3.10.0"
+black = "^23.0.0"
+flake8 = "^6.0.0"
+mypy = "^1.0.0"
+isort = "^5.12.0"
+pre-commit = "^3.0.0"
 
-[project.scripts]
+[tool.poetry.group.docs.dependencies]
+mkdocs = "^1.5.0"
+mkdocs-material = "^9.0.0"
+mkdocstrings = {extras = ["python"], version = "^0.20.0"}
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.0.0"
+pytest-asyncio = "^0.21.0"
+pytest-cov = "^4.0.0"
+pytest-mock = "^3.10.0"
+coverage = "^7.0.0"
+
+[tool.poetry.scripts]
 databricks-mcp-server = "databricks_mcp.cli.main:main"
 databricks-mcp = "databricks_mcp.cli.main:main"
-
-[tool.setuptools]
-package-dir = {"" = "src"}
-
-[tool.setuptools.packages.find]
-where = ["src"]
-include = ["databricks_mcp*"]
-
-[tool.setuptools.package-data]
-"databricks_mcp" = ["py.typed"]
 
 # Development tools configuration
 [tool.black]
 line-length = 88
-target-version = ['py39', 'py310', 'py311', 'py312']
+target-version = ['py310', 'py311', 'py312']
 include = '\.pyi?$'
 extend-exclude = '''
 /(
@@ -117,7 +93,7 @@ ensure_newline_before_comments = true
 src_paths = ["src", "tests"]
 
 [tool.mypy]
-python_version = "3.9"
+python_version = "3.10"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true

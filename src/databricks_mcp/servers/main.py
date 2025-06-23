@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 """
-Databricks MCP Server - Standard MCP Entry Point
+Databricks MCP Server - Main Entry Point
 
-This is the entry point for the standard (legacy) MCP server implementation.
-For the modern FastMCP server, use main_fastmcp.py instead.
+This redirects to the FastMCP server implementation.
 """
 
-import asyncio
 import sys
 from pathlib import Path
 
@@ -16,25 +14,16 @@ src_root = current_dir.parent.parent
 sys.path.insert(0, str(src_root))
 
 def main():
-    """Main entry point for the standard MCP server."""
+    """Main entry point - redirects to FastMCP server."""
+    print("🔄 Redirecting to FastMCP server...")
+    
     try:
-        # Import the standard MCP server
-        from databricks_mcp.core.server import DatabricksMCPServer
-        from databricks_mcp.core.config import DatabricksConfig
-        
-        print("🚀 Starting Databricks MCP Server (Standard)")
-        
-        # Load configuration
-        config = DatabricksConfig.from_env()
-        
-        # Create and run server
-        server = DatabricksMCPServer(config)
-        
-        # Run the server
-        return server.run()
+        # Import and run the FastMCP server
+        from databricks_mcp.servers.main_fastmcp import main as fastmcp_main
+        return fastmcp_main()
         
     except ImportError as e:
-        print(f"❌ Failed to import server module: {e}")
+        print(f"❌ Failed to import FastMCP server: {e}")
         print("\nMake sure all dependencies are installed:")
         print("pip install fastmcp 'mcp[cli]' databricks-sdk")
         sys.exit(1)
@@ -45,10 +34,4 @@ def main():
         sys.exit(1)
 
 if __name__ == "__main__":
-    try:
-        asyncio.run(main())
-    except KeyboardInterrupt:
-        print("\n👋 Server stopped by user")
-    except Exception as e:
-        print(f"❌ Server error: {e}")
-        sys.exit(1) 
+    main() 
