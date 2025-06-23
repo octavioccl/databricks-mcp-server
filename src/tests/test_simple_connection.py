@@ -32,8 +32,8 @@ async def test_simple_connection():
     
     try:
         # Direct import without complex MCP infrastructure
-        from databricks_mcp.config import DatabricksConfig
-        from databricks_mcp.utils.databricks_client import DatabricksClientWrapper
+        from databricks_mcp.core.config import DatabricksConfig
+        from databricks_mcp.core.utils.databricks_client import DatabricksClientWrapper
         
         # Initialize configuration and client
         config = DatabricksConfig.from_env()

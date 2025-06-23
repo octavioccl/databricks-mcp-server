@@ -3,7 +3,7 @@
 # Simple Docker runner for Databricks MCP Server
 set -e
 
-PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 
 # Check if .env file exists
 if [ ! -f "$PROJECT_DIR/.env" ]; then

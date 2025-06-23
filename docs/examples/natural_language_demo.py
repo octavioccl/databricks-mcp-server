@@ -23,9 +23,9 @@ async def demonstrate_natural_language_queries():
     
     try:
         # Import the client directly
-        from databricks_mcp.config import DatabricksConfig
-        from databricks_mcp.utils.databricks_client import DatabricksClientWrapper
-        from databricks_mcp.utils.natural_language import NaturalLanguageProcessor
+        from databricks_mcp.core.config import DatabricksConfig
+        from databricks_mcp.core.utils.databricks_client import DatabricksClientWrapper
+        from databricks_mcp.core.utils.natural_language import NaturalLanguageProcessor
         
         print("=== Databricks Natural Language Query Demo ===\n")
         

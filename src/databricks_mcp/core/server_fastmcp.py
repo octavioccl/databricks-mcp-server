@@ -15,7 +15,7 @@ from typing import Any, Dict, List, Optional
 
 from mcp.server.fastmcp import FastMCP
 
-from .config import DatabricksConfig
+from .config import DatabricksConfig, MCPConfig
 from .utils.databricks_client import DatabricksClientWrapper
 from .utils.query_validator import QueryValidator
 
@@ -42,7 +42,8 @@ def get_databricks_client() -> DatabricksClientWrapper:
         if _databricks_client is None:
             try:
                 config = DatabricksConfig.from_env()
-                _databricks_client = DatabricksClientWrapper(config)
+                mcp_config = MCPConfig.from_env()
+                _databricks_client = DatabricksClientWrapper(config, mcp_config.query_timeout)
                 logger.info("✅ Databricks client initialized")
             except Exception as e:
                 logger.error(f"❌ Error initializing Databricks client: {e}")

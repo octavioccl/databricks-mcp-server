@@ -17,9 +17,10 @@ logger = logging.getLogger(__name__)
 class DatabricksClientWrapper:
     """Wrapper around Databricks SDK with async support and caching."""
     
-    def __init__(self, config: DatabricksConfig):
+    def __init__(self, config: DatabricksConfig, query_timeout: int = 30):
         """Initialize the Databricks client wrapper."""
         self.config = config
+        self.query_timeout = min(max(query_timeout, 5), 50)  # Clamp between 5-50 seconds
         self.client = WorkspaceClient(
             host=config.host,
             token=config.token
@@ -128,11 +129,9 @@ class DatabricksClientWrapper:
             # Execute the query
             statement = await asyncio.to_thread(
                 lambda: self.client.statement_execution.execute_statement(
-                    ExecuteStatementRequest(
-                        statement=query,
-                        warehouse_id=warehouse,
-                        wait_timeout=f"{self.config.query_timeout}s"
-                    )
+                    warehouse_id=warehouse,
+                    statement=query,
+                    wait_timeout=f"{self.query_timeout}s"
                 )
             )
             
@@ -149,7 +148,6 @@ class DatabricksClientWrapper:
                 return {
                     "status": "success",
                     "data": result.data_array if result else [],
-                    "schema": result.schema if result else None,
                     "row_count": result.row_count if result else 0
                 }
             else:
