@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  databricks-mcp:
+    build:
+      context: ../../  # Build from project root
+      dockerfile: deploy/docker/Dockerfile
+    image: databricks-mcp-server:latest
+    container_name: databricks-mcp-server
+    environment:
+      - DATABRICKS_HOST=${DATABRICKS_HOST}
+      - DATABRICKS_TOKEN=${DATABRICKS_TOKEN}
+      - DATABRICKS_SQL_WAREHOUSE_ID=${DATABRICKS_SQL_WAREHOUSE_ID}
+      - DEFAULT_CATALOG=${DEFAULT_CATALOG:-main}
+      - DEFAULT_SCHEMA=${DEFAULT_SCHEMA:-default}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - MCP_SERVER_NAME=${MCP_SERVER_NAME:-databricks-mcp}
+      - ENABLE_CACHING=${ENABLE_CACHING:-true}
+    volumes:
+      - logs:/app/logs
+      - ./config:/app/config:ro  # Optional config directory
+    ports:
+      - "8000:8000"  # For development/debugging
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "from databricks_mcp.core.config import DatabricksConfig; print('OK')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    
+    # Alternative server configurations
+    profiles:
+      - default
+
+volumes:
+  logs:
+    driver: local 
